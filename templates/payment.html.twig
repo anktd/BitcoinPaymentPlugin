@@ -1,7 +1,9 @@
-{% extends '@SyliusShop/layout.html.twig' %}
-
-{% block content %}
-    <h2>Please send your payment to the following Bitcoin address:</h2>
-    <p><strong>{{ bitcoin_address }}</strong></p>
-    <p>Once payment is confirmed, your order will be processed.</p>
-{% endblock %}
+{% if payment.method.gatewayConfig.factoryName == 'bitcoin_payment' %}
+    <div class="ui segment">
+        <h3>Bitcoin Payment</h3>
+        <p>Please send your payment to the following Bitcoin address:</p>
+        <strong>{{ payment.details.bitcoin_address }}</strong>
+        <p>Amount to pay: {{ payment.amount|sylius_format_money(payment.currencyCode, sylius.localeCode) }}</p>
+        {# You might want to add a QR code here for easy scanning #}
+    </div>
+{% endif %}

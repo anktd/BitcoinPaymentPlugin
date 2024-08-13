@@ -4,44 +4,24 @@ declare(strict_types=1);
 
 namespace Blockonomics\BitcoinPaymentPlugin\DependencyInjection;
 
-use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-final class BlockonomicsBitcoinPaymentExtension extends AbstractResourceExtension implements PrependExtensionInterface
+final class BlockonomicsBitcoinPaymentExtension extends Extension
 {
-    use PrependDoctrineMigrationsTrait;
-
-    /** @psalm-suppress UnusedVariable */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
     }
 
-    public function prepend(ContainerBuilder $container): void
+    public function getAlias(): string
     {
-        $this->prependDoctrineMigrations($container);
-    }
-
-    protected function getMigrationsNamespace(): string
-    {
-        return 'DoctrineMigrations';
-    }
-
-    protected function getMigrationsDirectory(): string
-    {
-        return '@BlockonomicsBitcoinPaymentPlugin/migrations';
-    }
-
-    protected function getNamespacesOfMigrationsExecutedBefore(): array
-    {
-        return [
-            'Sylius\Bundle\CoreBundle\Migrations',
-        ];
+        return 'blockonomics_bitcoin_payment';
     }
 }

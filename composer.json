@@ -53,6 +53,7 @@
         }
     },
     "extra": {
+        "sylius-plugin-namespace": "Blockonomics\\BitcoinPaymentPlugin",
         "symfony": {
             "require": "^5.4 || ^6.0"
         }

@@ -1,0 +1,7 @@
+<div class="ui segment">
+    <h3>Bitcoin Payment</h3>
+    <p>Please send your payment to the following Bitcoin address:</p>
+    <strong>{{ bitcoin_address }}</strong>
+    <p>Amount to pay: {{ money.amount|sylius_format_money(money.currency, sylius.localeCode) }}</p>
+    <p>Once payment is confirmed, your order will be processed.</p>
+</div>

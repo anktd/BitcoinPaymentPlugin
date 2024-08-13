@@ -11,14 +11,20 @@
             <tag name="form.type" />
         </service>
 
+        <service id="Blockonomics\BitcoinPaymentPlugin\Payum\Action\CaptureAction" public="true">
+            <argument type="service" id="sylius.http_client" />
+            <tag name="payum.action" factory="bitcoin_payment" alias="payum.action.capture" />
+        </service>
+
         <service id="Blockonomics\BitcoinPaymentPlugin\Controller\BitcoinPaymentController">
             <tag name="controller.service_arguments" />
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
         </service>
-        <service id="Blockonomics\BitcoinPaymentPlugin\Payum\Action\CaptureAction">
-            <tag name="payum.action" factory="bitcoin_payment" alias="payum.action.capture" />
+        <service id="Blockonomics\BitcoinPaymentPlugin\EventListener\BitcoinPaymentListener">
+            <argument type="service" id="twig" />
+            <tag name="kernel.event_listener" event="sylius.order.post_payment" method="onOrderPayment" />
         </service>
     </services>
 </container>
