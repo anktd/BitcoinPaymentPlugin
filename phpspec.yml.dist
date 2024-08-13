@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: Blockonomics\BitcoinPaymentPlugin
+        psr4_prefix: Blockonomics\BitcoinPaymentPlugin
