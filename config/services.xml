@@ -17,5 +17,8 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
+        <service id="Blockonomics\BitcoinPaymentPlugin\Payum\Action\CaptureAction">
+            <tag name="payum.action" factory="bitcoin_payment" alias="payum.action.capture" />
+        </service>
     </services>
 </container>
