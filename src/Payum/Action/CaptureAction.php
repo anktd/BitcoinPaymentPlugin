@@ -1,25 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Blockonomics\BitcoinPaymentPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Exception\RequestNotSupportedException;
 
-final class CaptureAction implements ActionInterface
+class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $model = $request->getModel();
+        $model = ArrayObject::ensureArrayObject($request->getModel());
+
+        $bitcoinAddress = $this->gateway->getConfig()['payum.api']['bitcoin_address'];
+
+        if (empty($bitcoinAddress)) {
+            throw new \LogicException('The bitcoin_address in the gateway config is empty.');
+        }
 
         // Here you would typically integrate with your Bitcoin payment provider
-        // For now, we'll just set the status to 'new'
+        // For testing, I am just using some dummy data
         $model['status'] = 'new';
         $model['currency'] = 'BTC';
+        $model['bitcoin_address'] = $bitcoinAddress;
     }
 
     public function supports($request): bool
