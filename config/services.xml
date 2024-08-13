@@ -2,7 +2,20 @@
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="Blockonomics\BitcoinPaymentPlugin\Controller\GreetingController" autowire="true" autoconfigure="true" public="true" />
-        <!-- Put your services here -->
+        <service id="Blockonomics\BitcoinPaymentPlugin\Payum\Factory\BitcoinPaymentGatewayFactory">
+            <tag name="payum.gateway_factory" factory="bitcoin_payment" />
+        </service>
+
+        <service id="Blockonomics\BitcoinPaymentPlugin\Form\Type\BitcoinPaymentGatewayConfigurationType">
+            <tag name="sylius.gateway_configuration_type" type="bitcoin_payment" label="Bitcoin Payment" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="Blockonomics\BitcoinPaymentPlugin\Controller\BitcoinPaymentController">
+            <tag name="controller.service_arguments" />
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
     </services>
 </container>

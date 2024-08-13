@@ -1,1 +1,6 @@
 # Define your own admin routes here
+blockonomics_bitcoin_payment_display:
+    path: /payment/bitcoin/{orderId}
+    methods: [GET]
+    defaults:
+        _controller: Blockonomics\BitcoinPaymentPlugin\Controller\BitcoinPaymentController::displayPaymentAction
